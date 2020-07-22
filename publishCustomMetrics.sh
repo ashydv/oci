@@ -7,12 +7,11 @@ exec 1>>/tmp/customMetrics.log 2>&1
 date
 
 # OCI CLI binary location
-# Default installation location for Oracle Linux 7 is /home/opc/bin/oci
 cliLocation="/root/bin/oci"
 
 # Check if OCI CLI, jq, and curl is installed
 if ! [ -x "$(command -v $cliLocation)" ]; then
-  echo 'Error: OCI CLI is not installed. Please follow the instructions in this link: https://docs.cloud.oracle.com/iaas/Content/API/SDKDocs/cliinstall.htm' >&2
+  echo 'Error: OCI CLI is not installed.' >&2
   exit 1
 fi
 
@@ -26,8 +25,7 @@ if ! [ -x "$(command -v curl)" ]; then
   exit 1
 fi
 
-# Getting instance metadata. For more information, check this link: https://docs.cloud.oracle.com/iaas/Content/Compute/Tasks/gettingmetadata.htm
-# By default, metrics are published to the same compartment with the instance being monitored. You may change the following variables if you want to use different values.
+# Getting instance metadata.
 compartmentId=$(curl -s -L http://169.254.169.254/opc/v1/instance/ | jq -r '.compartmentId')
 metricNamespace="mycustomnamespace"
 metricResourceGroup="mycustomnamespace_rg"
